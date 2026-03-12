@@ -256,16 +256,16 @@
 
   /* ── SECTION DIVIDER ── */
   .section-divider {
-    padding: 10px 16px 4px;
+    padding: 16px 16px 6px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
   .section-divider-label {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
+    font-size: 18px;
     font-weight: 700;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--text-dim);
     white-space: nowrap;
@@ -396,28 +396,29 @@
     grid-column: 1 / -1;
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 18px 0 6px;
-    margin-top: 8px;
+    gap: 16px;
+    padding: 28px 0 10px;
+    margin-top: 16px;
   }
   .zone-label {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
+    font-size: 20px;
     font-weight: 800;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--text-bright);
     white-space: nowrap;
-    padding: 3px 10px;
-    border: 1px solid rgba(232,52,26,0.3);
-    border-radius: 3px;
-    background: rgba(232,52,26,0.07);
+    padding: 5px 16px;
+    border: 1px solid rgba(232,52,26,0.5);
+    border-radius: 4px;
+    background: rgba(232,52,26,0.1);
+    text-shadow: 0 0 20px rgba(232,52,26,0.4);
   }
   .zone-divider::after {
     content: '';
     flex: 1;
     height: 1px;
-    background: linear-gradient(to right, rgba(232,52,26,0.2), transparent);
+    background: linear-gradient(to right, rgba(232,52,26,0.4), transparent);
   }
 
   /* ── HIGHLIGHT ── */
@@ -501,6 +502,8 @@
   <a href="#weather">🌦 Weather</a>
   <a href="#lineups">📋 Lineups</a>
   <a href="#analytics">🔬 Analytics</a>
+  <a href="#minors">🧢 Minor Leagues</a>
+  <a href="#sportsbiz">📰 Sports Biz</a>
 </div>
 
 <!-- TICKER -->
@@ -566,6 +569,8 @@
   <span class="feat-chip" onclick="filterChip(this,'lineups')">Lineups</span>
   <span class="feat-chip" onclick="filterChip(this,'analytics')">Analytics</span>
   <span class="feat-chip" onclick="filterChip(this,'replay')">Replay</span>
+  <span class="feat-chip" onclick="filterChip(this,'minor leagues')">Minor Leagues</span>
+  <span class="feat-chip" onclick="filterChip(this,'business')">Sports Biz</span>
 </div>
 
 <!-- MAIN GRID -->
@@ -875,7 +880,7 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://overthecap.com" target="_blank">OverTheCap (NFL)</a></div>
       <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>The deepest NFL cap, contracts, and dead money resource</em></div>
       <div class="link-item"><div class="link-dot"></div><a href="https://www.puckpedia.com" target="_blank">PuckPedia (NHL)</a></div>
-      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>NHL salary cap tracking, contracts, and LTIR (replaced CapFriendly)</em></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>NHL salary cap tracking, contracts, LTIR — preferred by many analysts</em></div>
       <div class="link-item"><div class="link-dot"></div><a href="https://hoopshype.com/salaries/" target="_blank">HoopsHype Salaries (NBA)</a></div>
       <div class="link-item"><div class="link-dot"></div><a href="https://www.basketball-reference.com/contracts/" target="_blank">Basketball Reference Contracts</a></div>
       <div class="link-item"><div class="link-dot"></div><a href="https://www.baseball-reference.com/friv/current-contracts.shtml" target="_blank">Baseball Reference Contracts</a></div>
@@ -1053,6 +1058,72 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://official.nba.com/rulebook/" target="_blank">NBA Video Rulebook</a></div>
       <div class="link-item"><div class="link-dot"></div><a href="https://www.mlb.com/video/topic/replay-review" target="_blank">MLB Replay Review</a></div>
       <div class="link-item"><div class="link-dot"></div><a href="https://www.nhl.com/fans/nhl-situation-room" target="_blank">NHL Situation Room</a></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://umpscorecards.com" target="_blank">MLB Umpire Scorecards</a></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>Grades every MLB umpire's strike zone accuracy — a hidden gem</em></div>
+    </div>
+  </div>
+
+  <!-- MINOR LEAGUES & PLAYER DEVELOPMENT -->
+  <div class="card" data-color="green" data-tags="minor leagues player development milb g league ahl echl chl usl mls next pro f2 indy nxt nascar xfinity baseball basketball hockey soccer racing pipeline">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon icon-green">🧢</div>
+      <div class="card-title">Minor Leagues &amp; Player Development</div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-links">
+      <div class="link-item"><div class="link-dot" style="background:var(--accent)"></div><strong style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em">⚾ Baseball</strong></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.milb.com" target="_blank">Minor League Baseball (MiLB)</a><span class="link-tag tag-top">Top</span></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>Official hub for all affiliated MiLB — Triple-A through Single-A</em></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.milb.com/about/teams/by-level/triple-a" target="_blank">Triple-A Baseball</a></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.milb.com/about/teams/by-level/double-a" target="_blank">Double-A Baseball</a></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.atlanticleague.com" target="_blank">Atlantic League (Independent)</a></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.frontierleague.com" target="_blank">Frontier League (Independent)</a></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.americanassociationbaseball.com" target="_blank">American Association (Ind.)</a></div>
+      <div class="link-item"><div class="link-dot" style="background:var(--accent3)"></div><strong style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em">🏀 Basketball</strong></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://gleague.nba.com" target="_blank">NBA G League</a></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>Official NBA development league — call-up tracker and rosters</em></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.euroleague.net" target="_blank">EuroLeague</a></div>
+      <div class="link-item"><div class="link-dot" style="background:var(--green)"></div><strong style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em">🏒 Hockey</strong></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://theahl.com" target="_blank">AHL — American Hockey League</a></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>Primary NHL development league</em></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.echl.com" target="_blank">ECHL</a></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.chl.ca" target="_blank">CHL — Canadian Hockey League</a></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>Umbrella for OHL, WHL, and QMJHL junior leagues</em></div>
+      <div class="link-item"><div class="link-dot" style="background:var(--purple)"></div><strong style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em">⚽ Soccer</strong></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.mlsnextpro.com" target="_blank">MLS NEXT Pro</a></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.uslchampionship.com" target="_blank">USL Championship</a></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>USL second and third division — full league structure explained</em></div>
+      <div class="link-item"><div class="link-dot" style="background:var(--accent2)"></div><strong style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em">🏎 Racing Development</strong></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.fiaformula2.com" target="_blank">FIA Formula 2</a></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.indynxt.com" target="_blank">Indy NXT</a></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.nascar.com/xfinity-series/" target="_blank">NASCAR Xfinity Series</a></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.nascar.com/craftsman-truck-series/" target="_blank">NASCAR Truck Series</a></div>
+    </div>
+  </div>
+
+  <!-- SPORTS BUSINESS & MEDIA -->
+  <div class="card" data-color="blue" data-tags="sports business media journalism front office sbj sportico athletic defector awful announcing nil industry">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="card-icon icon-blue">📰</div>
+      <div class="card-title">Sports Business &amp; Media</div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-links">
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.sportsbusinessjournal.com" target="_blank">Sports Business Journal</a><span class="link-tag tag-top">Top</span></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>The industry bible for sports business, deals, and media rights</em></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://frontofficesports.com" target="_blank">Front Office Sports</a></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>Daily sports business news — media rights, sponsorships, finance</em></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.sportico.com" target="_blank">Sportico</a></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>Sports finance and valuation — team values, contracts, market analysis</em></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://theathletic.com" target="_blank">The Athletic</a></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://defector.com" target="_blank">Defector</a></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>Independently owned sports journalism — long-form and sharp</em></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://awfulannouncing.com" target="_blank">Awful Announcing</a></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>Sports media criticism and broadcast industry coverage</em></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.on3.com/nil/" target="_blank">On3 NIL</a></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>NIL valuations, deal tracker, and college athlete brand rankings</em></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.athleticdirectoru.com" target="_blank">Athletic Director U</a></div>
+      <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>College athletics administration, NIL, and industry news</em></div>
     </div>
   </div>
 
@@ -1234,12 +1305,12 @@
 <div id="footer">
   <span>© 2026 GameDay Express — A curated sports portal. All linked sites are property of their respective owners.</span>
   <span>No live data · No accounts · No tracking</span>
-  <span><a href="mailto:tombotas@gmail.com?subject=GameDay%20Express%20Broken%20Link&body=URL%3A%20%0ASection%3A%20" style="color:var(--text-dim);text-decoration:none;font-size:11px;opacity:0.7;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">🔗 Report a broken link</a></span>
+  <span><a href="/cdn-cgi/l/email-protection#84f0ebe9e6ebf0e5f7c4e3e9e5ede8aae7ebe9bbf7f1e6eee1e7f0b9c3e5e9e1c0e5fda1b6b4c1fcf4f6e1f7f7a1b6b4c6f6ebefe1eaa1b6b4c8edeaefa2e6ebe0fdb9d1d6c8a1b7c5a1b6b4a1b4c5d7e1e7f0edebeaa1b7c5a1b6b4" style="color:var(--text-dim);text-decoration:none;font-size:11px;opacity:0.7;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">🔗 Report a broken link</a></span>
 </div>
 
 <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const d = new Date();
   document.getElementById('ticker-date').textContent =
     'GameDay Express — ' + d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
@@ -1283,12 +1354,4 @@
   }
 
   window.addEventListener('scroll', ()=>{
-    document.getElementById('scroll-top').classList.toggle('visible', window.scrollY>400);
-  });
-
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/gamedayexpress/sw.js');
-  }
-</script>
-</body>
-</html>
+    do
