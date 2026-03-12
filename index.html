@@ -182,7 +182,6 @@
     border-bottom: 2px solid var(--border-bright);
     padding: 10px 16px;
   }
-
   #quick-hits-label {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 11px;
@@ -190,7 +189,7 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--accent2);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -201,13 +200,36 @@
     height: 1px;
     background: var(--border);
   }
-
+  #qh-subtitle {
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: none;
+    color: var(--text-dim);
+    letter-spacing: 0;
+  }
   #quick-hits-links {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+    min-height: 0;
+    margin-bottom: 4px;
   }
-
+  #qh-defaults-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 8px 0 5px;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+  }
+  #qh-defaults {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
   .quick-chip {
     background: var(--surface2);
     border: 1px solid var(--border-bright);
@@ -218,6 +240,8 @@
     border-radius: 3px;
     transition: all 0.15s;
     white-space: nowrap;
+    text-decoration: none;
+    display: inline-block;
   }
   .quick-chip:hover {
     background: var(--accent3);
@@ -225,6 +249,57 @@
     color: #fff;
     text-decoration: none;
   }
+  /* Pinned chip in My Quick Hits */
+  .pinned-chip {
+    background: rgba(232,52,26,0.15);
+    border: 1px solid var(--accent);
+    color: var(--text-bright);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 10px 5px 13px;
+    border-radius: 3px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pinned-chip a {
+    color: var(--text-bright);
+    text-decoration: none;
+  }
+  .pinned-chip a:hover { color: var(--accent2); }
+  .unpin-btn {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 11px;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+  .unpin-btn:hover { color: var(--accent); }
+  /* Pin button on link items */
+  .link-item { position: relative; }
+  .pin-btn {
+    display: none;
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-dim);
+    padding: 2px 4px;
+    border-radius: 3px;
+    transition: all 0.15s;
+    line-height: 1;
+  }
+  .link-item:hover .pin-btn { display: inline-block; }
+  .pin-btn:hover { color: var(--accent2); background: rgba(245,166,35,0.15); }
+  .pin-btn.pinned { color: var(--accent2); display: inline-block; }
 
   /* ── FILTER CHIPS ── */
   #featured {
@@ -519,8 +594,15 @@
 
 <!-- ① QUICK HITS -->
 <div id="quick-hits">
-  <div id="quick-hits-label">⚡ Quick Hits — Most Used</div>
+  <div id="quick-hits-label">
+    ⚡ Quick Hits
+    <span id="qh-subtitle">— hover any link below and click 📌 to pin it here</span>
+  </div>
   <div id="quick-hits-links">
+    <span id="qh-empty" style="display:none;font-size:12px;color:var(--text-dim);padding:4px 8px;font-style:italic;">No pins yet — hover any link and click 📌 to add it here</span>
+  </div>
+  <div id="qh-defaults-label">⚡ Default Quick Hits</div>
+  <div id="qh-defaults">
     <a class="quick-chip" href="https://www.espn.com" target="_blank">ESPN</a>
     <a class="quick-chip" href="https://www.fangraphs.com" target="_blank">FanGraphs</a>
     <a class="quick-chip" href="https://www.fantasypros.com" target="_blank">FantasyPros</a>
@@ -689,7 +771,7 @@
   <div class="zone-divider">
     <span class="zone-label">🏆 FANTASY</span>
   </div>
-  <div class="card" data-color="orange" data-tags="fantasy baseball rankings projections waiver fangraphs razzball pitcher list rotoballer">
+  <div class="card" id="fantasy-baseball" data-color="orange" data-tags="fantasy baseball rankings projections waiver fangraphs razzball pitcher list rotoballer">
     <div class="card-header">
       <div class="card-icon icon-orange">⚾</div>
       <div class="card-title">Fantasy Baseball</div>
@@ -710,7 +792,7 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://www.rotoballer.com/baseball" target="_blank">RotoBaller Baseball</a></div>
     </div>
   </div>
-  <div class="card" data-color="red" data-tags="fantasy football nfl rankings projections waiver sleeper yahoo espn footballguys pff">
+  <div class="card" id="fantasy-football" data-color="red" data-tags="fantasy football nfl rankings projections waiver sleeper yahoo espn footballguys pff">
     <div class="card-header">
       <div class="card-icon icon-red">🏈</div>
       <div class="card-title">Fantasy Football</div>
@@ -729,7 +811,7 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://www.draftsharks.com" target="_blank">Draft Sharks</a></div>
     </div>
   </div>
-  <div class="card" data-color="blue" data-tags="fantasy basketball nba rankings rotowire fantasypros hashtag basketball realgm">
+  <div class="card" id="fantasy-basketball" data-color="blue" data-tags="fantasy basketball nba rankings rotowire fantasypros hashtag basketball realgm">
     <div class="card-header">
       <div class="card-icon icon-blue">🏀</div>
       <div class="card-title">Fantasy Basketball</div>
@@ -764,7 +846,7 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://www.hockey-reference.com" target="_blank">Hockey Reference</a></div>
     </div>
   </div>
-  <div class="card" data-color="green" data-tags="dfs daily fantasy draftkings fanduel underdog rotogrinders stokastic prizepicks props">
+  <div class="card" id="dfs" data-color="green" data-tags="dfs daily fantasy draftkings fanduel underdog rotogrinders stokastic prizepicks props">
     <div class="card-header">
       <div class="card-icon icon-green">💰</div>
       <div class="card-title">DFS — Daily Fantasy</div>
@@ -818,7 +900,7 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://www.fanatics.com/sportsbook" target="_blank">Fanatics Sportsbook</a></div>
     </div>
   </div>
-  <div class="card" data-color="orange" data-tags="odds betting analysis action network covers vegas insider vsin sportsbook review oddsportal">
+  <div class="card" id="betting" data-color="orange" data-tags="odds betting analysis action network covers vegas insider vsin sportsbook review oddsportal">
     <div class="card-header">
       <div class="card-icon icon-orange">📈</div>
       <div class="card-title">Odds & Betting Analysis</div>
@@ -840,7 +922,7 @@
   <div class="zone-divider">
     <span class="zone-label">🔬 DATA & RESEARCH</span>
   </div>
-  <div class="card" data-color="blue" data-tags="stats analytics research baseball savant pff statmuse nfl next gen nba tracking fangraphs dvoa hockey advanced metrics databases reference">
+  <div class="card" id="stats" data-color="blue" data-tags="stats analytics research baseball savant pff statmuse nfl next gen nba tracking fangraphs dvoa hockey advanced metrics databases reference">
     <div class="card-header">
       <div class="card-icon icon-blue">📊</div>
       <div class="card-title">Stats, Analytics & Research</div>
@@ -869,7 +951,7 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://www.stathead.com" target="_blank">Stathead</a></div>
     </div>
   </div>
-  <div class="card" data-color="green" data-tags="contracts salary cap spotrac overthecap puckpedia nfl nba mlb nhl payroll transactions money">
+  <div class="card" id="contracts" data-color="green" data-tags="contracts salary cap spotrac overthecap puckpedia nfl nba mlb nhl payroll transactions money">
     <div class="card-header">
       <div class="card-icon icon-green">💵</div>
       <div class="card-title">Contracts & Salary Caps</div>
@@ -908,7 +990,7 @@
   <div class="zone-divider">
     <span class="zone-label">📡 MEDIA</span>
   </div>
-  <div class="card" data-color="red" data-tags="beat writers team news local reporters transactions nfl nba mlb nhl insider athletic">
+  <div class="card" id="beat-writers" data-color="red" data-tags="beat writers team news local reporters transactions nfl nba mlb nhl insider athletic">
     <div class="card-header">
       <div class="card-icon icon-red">📡</div>
       <div class="card-title">Team News & Beat Writers</div>
@@ -928,7 +1010,7 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://www.espn.com/mlb/transactions" target="_blank">ESPN MLB Transactions</a></div>
     </div>
   </div>
-  <div class="card" data-color="teal" data-tags="podcasts video youtube fantasy footballers ringer espn barstool cbs nba highlights">
+  <div class="card" id="podcasts" data-color="teal" data-tags="podcasts video youtube fantasy footballers ringer espn barstool cbs nba highlights">
     <div class="card-header">
       <div class="card-icon icon-teal">🎙</div>
       <div class="card-title">Podcasts & Video</div>
@@ -965,7 +1047,7 @@
   <div class="zone-divider">
     <span class="zone-label">🎓 DEVELOPMENT</span>
   </div>
-  <div class="card" data-color="orange" data-tags="coaching drills youth baseball football basketball usa little league glazier driveline">
+  <div class="card" id="coaching" data-color="orange" data-tags="coaching drills youth baseball football basketball usa little league glazier driveline">
     <div class="card-header">
       <div class="card-icon icon-orange">🏅</div>
       <div class="card-title">Coaching & Drills</div>
@@ -986,7 +1068,7 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://www.dominatethediamond.com" target="_blank">Dominate The Diamond</a></div>
     </div>
   </div>
-  <div class="card" data-color="purple" data-tags="prospects recruiting football basketball baseball hockey soccer 247 rivals on3 pipeline elite">
+  <div class="card" id="recruiting" data-color="purple" data-tags="prospects recruiting football basketball baseball hockey soccer 247 rivals on3 pipeline elite">
     <div class="card-header">
       <div class="card-icon icon-purple">🔭</div>
       <div class="card-title">Prospects & Recruiting</div>
@@ -1009,7 +1091,7 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://www.transfermarkt.com" target="_blank">Transfermarkt (Soccer Prospects)</a></div>
     </div>
   </div>
-  <div class="card" data-color="orange" data-tags="officials umpires referees training certification gear uniforms baseball football basketball soccer tennis nfhs little league">
+  <div class="card" id="officials" data-color="orange" data-tags="officials umpires referees training certification gear uniforms baseball football basketball soccer tennis nfhs little league">
     <div class="card-header">
       <div class="card-icon icon-orange">🟡</div>
       <div class="card-title">Officials & Umpires</div>
@@ -1033,7 +1115,7 @@
       <div class="link-item" style="padding-left:20px;font-size:11px;color:var(--text-dim)"><em>Officials gear, books, and study guides for multiple sports</em></div>
     </div>
   </div>
-  <div class="card" data-color="orange" data-tags="rules rulebooks officiating replay review mlb nfl nba nhl ncaa nfhs pickleball tennis fia formula 1 little league video">
+  <div class="card" id="rules" data-color="orange" data-tags="rules rulebooks officiating replay review mlb nfl nba nhl ncaa nfhs pickleball tennis fia formula 1 little league video">
     <div class="card-header">
       <div class="card-icon icon-orange">📖</div>
       <div class="card-title">Rules & Officiating</div>
@@ -1064,7 +1146,7 @@
   </div>
 
   <!-- MINOR LEAGUES & PLAYER DEVELOPMENT -->
-  <div class="card" data-color="green" data-tags="minor leagues player development milb g league ahl echl chl usl mls next pro f2 indy nxt nascar xfinity baseball basketball hockey soccer racing pipeline">
+  <div class="card" id="minors" data-color="green" data-tags="minor leagues player development milb g league ahl echl chl usl mls next pro f2 indy nxt nascar xfinity baseball basketball hockey soccer racing pipeline">
     <div class="card-header" onclick="toggleCard(this)">
       <div class="card-icon icon-green">🧢</div>
       <div class="card-title">Minor Leagues &amp; Player Development</div>
@@ -1102,7 +1184,7 @@
   </div>
 
   <!-- SPORTS BUSINESS & MEDIA -->
-  <div class="card" data-color="blue" data-tags="sports business media journalism front office sbj sportico athletic defector awful announcing nil industry">
+  <div class="card" id="sportsbiz" data-color="blue" data-tags="sports business media journalism front office sbj sportico athletic defector awful announcing nil industry">
     <div class="card-header" onclick="toggleCard(this)">
       <div class="card-icon icon-blue">📰</div>
       <div class="card-title">Sports Business &amp; Media</div>
@@ -1199,7 +1281,7 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://www.golfweek.com" target="_blank">Golfweek</a></div>
     </div>
   </div>
-  <div class="card" data-color="green" data-tags="tennis pickleball table tennis usta atp wta rules instruction equipment paddle racket">
+  <div class="card" id="tennis" data-color="green" data-tags="tennis pickleball table tennis usta atp wta rules instruction equipment paddle racket">
     <div class="card-header">
       <div class="card-icon icon-green">🎾</div>
       <div class="card-title">Tennis / Pickleball / Table Tennis</div>
@@ -1220,7 +1302,7 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://www.ittf.com/about-ittf/" target="_blank">ITTF (International Table Tennis)</a></div>
     </div>
   </div>
-  <div class="card" data-color="red" data-tags="motorsports racing formula 1 f1 nascar indycar motogp fia sports cars">
+  <div class="card" id="racing" data-color="red" data-tags="motorsports racing formula 1 f1 nascar indycar motogp fia sports cars">
     <div class="card-header">
       <div class="card-icon icon-red">🏎</div>
       <div class="card-title">Motorsports & Racing</div>
@@ -1305,7 +1387,7 @@
 <div id="footer">
   <span>© 2026 GameDay Express — A curated sports portal. All linked sites are property of their respective owners.</span>
   <span>No live data · No accounts · No tracking</span>
-  <span><a href="mailto:gamedayexpress@gmail.com?subject=Broken Link Report" style="
+  <span><a href="/cdn-cgi/l/email-protection#c0a7a1ada5a4a1b9a5b8b0b2a5b3b380a7ada1a9aceea3afadffb3b5a2aaa5a3b4fd82b2afaba5aee08ca9aeabe092a5b0afb2b4" style="
     color: var(--accent);
     text-decoration: none;
     font-size: 14px;
@@ -1321,7 +1403,7 @@
 
 <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const d = new Date();
   document.getElementById('ticker-date').textContent =
     'GameDay Express — ' + d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
@@ -1360,9 +1442,89 @@
   function filterChip(el, tag) {
     document.querySelectorAll('.feat-chip').forEach(c=>c.classList.remove('active'));
     el.classList.add('active');
-    searchEl.value = tag;
     runFilter(tag);
   }
 
-  window.addEventListener('scroll', ()=>{
-    do
+  // Scroll to top button
+  window.addEventListener('scroll', () => {
+    document.getElementById('scroll-top').style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+
+  // ── PERSONALIZED QUICK HITS ──────────────────────────────
+  const PINS_KEY = 'gde_pins_v1';
+
+  function loadPins() {
+    try { return JSON.parse(localStorage.getItem(PINS_KEY)) || []; }
+    catch { return []; }
+  }
+  function savePins(pins) {
+    try { localStorage.setItem(PINS_KEY, JSON.stringify(pins)); } catch {}
+  }
+
+  function renderPins() {
+    const pins = loadPins();
+    const container = document.getElementById('quick-hits-links');
+    const empty = document.getElementById('qh-empty');
+    container.querySelectorAll('.pinned-chip').forEach(el => el.remove());
+    if (pins.length === 0) {
+      empty.style.display = 'inline-block';
+    } else {
+      empty.style.display = 'none';
+      pins.forEach(pin => {
+        const chip = document.createElement('span');
+        chip.className = 'pinned-chip';
+        chip.innerHTML = `<a href="${pin.url}" target="_blank">${pin.name}</a><button class="unpin-btn" title="Unpin" onclick="unpin('${pin.url}')">✕</button>`;
+        container.appendChild(chip);
+      });
+    }
+    // Update pin button states across all link items
+    document.querySelectorAll('.pin-btn').forEach(btn => {
+      const url = btn.dataset.url;
+      const isPinned = pins.some(p => p.url === url);
+      btn.textContent = isPinned ? '📌' : '📌';
+      btn.classList.toggle('pinned', isPinned);
+      btn.title = isPinned ? 'Unpin' : 'Pin to Quick Hits';
+    });
+  }
+
+  function togglePin(url, name) {
+    let pins = loadPins();
+    const idx = pins.findIndex(p => p.url === url);
+    if (idx > -1) {
+      pins.splice(idx, 1);
+    } else {
+      pins.push({ url, name });
+    }
+    savePins(pins);
+    renderPins();
+  }
+
+  function unpin(url) {
+    let pins = loadPins().filter(p => p.url !== url);
+    savePins(pins);
+    renderPins();
+  }
+
+  // Add pin buttons to every link item
+  document.querySelectorAll('.link-item').forEach(item => {
+    const a = item.querySelector('a');
+    if (!a) return;
+    const btn = document.createElement('button');
+    btn.className = 'pin-btn';
+    btn.textContent = '📌';
+    btn.title = 'Pin to Quick Hits';
+    btn.dataset.url = a.href;
+    btn.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      togglePin(a.href, a.textContent.trim());
+    };
+    item.appendChild(btn);
+  });
+
+  // Initial render
+  renderPins();
+
+</script>
+</body>
+</html>
