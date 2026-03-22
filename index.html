@@ -1270,7 +1270,7 @@
       <div class="link-item"><div class="link-dot"></div><a href="https://www.socon.org" target="_blank">Southern Conference</a></div>
       <div class="link-item"><div class="link-dot"></div><a href="https://www.bignorthernconference.com" target="_blank">Big South</a></div>
       <div class="link-item"><div class="link-dot"></div><a href="https://www.patriotleague.org" target="_blank">Patriot League</a></div>
-      <div class="link-item"><div class="link-dot"></div><a href="https://www.ivyleague.com" target="_blank">Ivy League</a></div>
+      <div class="link-item"><div class="link-dot"></div><a href="https://www.ivy-league.com" target="_blank">Ivy League</a></div>
     </div>
   </div>
   <div class="card" data-color="teal" data-tags="soccer international premier league mls goal fotmob fbref understat transfermarkt sofascore">
@@ -1582,17 +1582,19 @@
 
 </script>
 
-<!-- CLICK TRACKING SCRIPT -->
+<!-- CLICK TRACKING -->
 <script>
-document.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', function() {
-    gtag('event', 'link_click', {
-      event_category: 'outbound',
-      event_label: this.href
+window.addEventListener('load', function() {
+  document.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      gtag('event', 'link_click', {
+        event_category: 'outbound',
+        event_label: this.href,
+        link_text: this.textContent.trim()
+      });
     });
   });
 });
 </script>
-
 </body>
-</html>  
+</html>
