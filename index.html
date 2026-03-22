@@ -1581,5 +1581,18 @@
   renderPins();
 
 </script>
+
+<!-- CLICK TRACKING SCRIPT -->
+<script>
+document.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', function() {
+    gtag('event', 'link_click', {
+      event_category: 'outbound',
+      event_label: this.href
+    });
+  });
+});
+</script>
+
 </body>
-</html>
+</html>  
