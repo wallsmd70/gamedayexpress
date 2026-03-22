@@ -6,7 +6,7 @@
 // version number below by 1 (v2, v3, v4 etc.)
 // That's all you ever need to do.
 // ─────────────────────────────────────────────
-const CACHE_VERSION = 'gamedayexpress-v17';
+const CACHE_VERSION = 'gamedayexpress-v18';
 const OFFLINE_PAGE  = '/gamedayexpress/index.html';
 
 // Install: cache the core page immediately
