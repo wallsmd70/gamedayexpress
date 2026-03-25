@@ -1,22 +1,22 @@
 // ─────────────────────────────────────────────
 // GameDay Express — Service Worker
 // ─────────────────────────────────────────────
-const CACHE_VERSION = 'gamedayexpress-v25';
-const OFFLINE_PAGE  = '/gamedayexpress/index.html';
+const CACHE_VERSION = 'gamedayexpress-v28';
+const OFFLINE_PAGE  = '/index.html';
 
 // Install: cache the core page immediately
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_VERSION).then(cache => {
       return cache.addAll([
-        '/gamedayexpress/',
-        '/gamedayexpress/index.html',
-        '/gamedayexpress/manifest.json',
-        '/gamedayexpress/style.css',
-        '/gamedayexpress/main.js',
-        '/gamedayexpress/ticker.js',
-        '/gamedayexpress/tracking.js',
-        '/gamedayexpress/assets/logo.png'
+        '/',
+        '/index.html',
+        '/manifest.json',
+        '/style.css',
+        '/main.js',
+        '/ticker.js',
+        '/tracking.js',
+        '/assets/logo.png'
       ]);
     })
   );
