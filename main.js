@@ -1,3 +1,4 @@
+(function() {
   const d = new Date();
   document.getElementById('ticker-date').textContent =
     'GameDay Express — ' + d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
@@ -8,7 +9,6 @@
   function runFilter(q) {
     const activeBtn = document.getElementById('active-category');
     if (activeBtn && q !== undefined) {
-      // Check if we are passing a category vs a search term
       const isSearch = document.activeElement === searchEl;
       if (!isSearch) {
         activeBtn.textContent = (q === '' ? 'All Categories' : q.charAt(0).toUpperCase() + q.slice(1)) + ' ▼';
@@ -52,16 +52,12 @@
     });
   }
 
-  // Mobile Dropdown Handling (Toggle on click)
   document.querySelectorAll('.dropdown').forEach(dropdown => {
     dropdown.addEventListener('click', (e) => {
       if (window.innerWidth <= 768) {
         const content = dropdown.querySelector('.dropdown-content');
         const isOpen = content.style.display === 'grid' || content.style.display === 'flex';
-        
-        // Close all other dropdowns
         document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
-        
         if (!isOpen) {
           content.style.display = content.classList.contains('qh-grid') || content.classList.contains('browse-grid') ? 'grid' : 'flex';
         }
@@ -70,21 +66,17 @@
     });
   });
 
-  // Close dropdowns when clicking outside
   document.addEventListener('click', () => {
     if (window.innerWidth <= 768) {
       document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
     }
   });
 
-  // Scroll to top button
   window.addEventListener('scroll', () => {
     document.getElementById('scroll-top').style.display = window.scrollY > 400 ? 'block' : 'none';
   });
 
-  // ── PERSONALIZED QUICK HITS ──────────────────────────────
   const PINS_KEY = 'gde_pins_v1';
-
   function loadPins() {
     try { return JSON.parse(localStorage.getItem(PINS_KEY)) || []; }
     catch { return []; }
@@ -109,35 +101,29 @@
         container.appendChild(chip);
       });
     }
-    // Update pin button states across all link items
     document.querySelectorAll('.pin-btn').forEach(btn => {
       const url = btn.dataset.url;
       const isPinned = pins.some(p => p.url === url);
-      btn.textContent = isPinned ? '📌' : '📌';
+      btn.textContent = '📌';
       btn.classList.toggle('pinned', isPinned);
       btn.title = isPinned ? 'Unpin' : 'Pin to Quick Hits';
     });
   }
 
-  function togglePin(url, name) {
+  window.togglePin = function(url, name) {
     let pins = loadPins();
     const idx = pins.findIndex(p => p.url === url);
-    if (idx > -1) {
-      pins.splice(idx, 1);
-    } else {
-      pins.push({ url, name });
-    }
+    if (idx > -1) { pins.splice(idx, 1); } else { pins.push({ url, name }); }
     savePins(pins);
     renderPins();
-  }
+  };
 
-  function unpin(url) {
+  window.unpin = function(url) {
     let pins = loadPins().filter(p => p.url !== url);
     savePins(pins);
     renderPins();
-  }
+  };
 
-  // Add pin buttons to every link item
   document.querySelectorAll('.link-item').forEach(item => {
     const a = item.querySelector('a');
     if (!a) return;
@@ -149,10 +135,30 @@
     btn.onclick = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      togglePin(a.href, a.textContent.trim());
+      window.togglePin(a.href, a.textContent.trim());
     };
     item.appendChild(btn);
   });
 
-  // Initial render
   renderPins();
+
+  const navHome = document.getElementById('nav-home');
+  const navSearch = document.getElementById('nav-search');
+  const navPinned = document.getElementById('nav-pinned');
+
+  if (navHome) {
+    navHome.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  }
+  if (navSearch) {
+    navSearch.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => { searchEl.focus(); }, 300);
+    });
+  }
+  if (navPinned) {
+    navPinned.addEventListener('click', () => {
+      const quickHits = document.getElementById('quick-hits');
+      if (quickHits) { quickHits.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  }
+})();
