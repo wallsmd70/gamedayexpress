@@ -5,6 +5,7 @@
 
   const searchEl = document.getElementById('search');
   const clearBtn = document.getElementById('clear-btn');
+  const overlay = document.getElementById('overlay');
 
   function runFilter(q) {
     const activeBtn = document.getElementById('active-category');
@@ -42,33 +43,38 @@
   searchEl.addEventListener('input', ()=>runFilter(searchEl.value));
   clearBtn.addEventListener('click', ()=>{ searchEl.value=''; runFilter(''); });
 
-  function filterQuickHits(cat) {
-    document.querySelectorAll('#qh-defaults .quick-chip').forEach(chip => {
-      if (cat === 'all' || chip.classList.contains('qh-' + cat)) {
-        chip.style.display = '';
-      } else {
-        chip.style.display = 'none';
-      }
-    });
+  // Improved Dropdown Handling for Mobile
+  function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown-content').forEach(c => c.classList.remove('active'));
+    if (overlay) overlay.style.display = 'none';
+    document.body.style.overflow = '';
   }
 
   document.querySelectorAll('.dropdown').forEach(dropdown => {
     dropdown.addEventListener('click', (e) => {
       if (window.innerWidth <= 768) {
         const content = dropdown.querySelector('.dropdown-content');
-        const isOpen = content.style.display === 'grid' || content.style.display === 'flex';
-        document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
-        if (!isOpen) {
-          content.style.display = content.classList.contains('qh-grid') || content.classList.contains('browse-grid') ? 'grid' : 'flex';
+        const isActive = content.classList.contains('active');
+
+        closeAllDropdowns();
+
+        if (!isActive) {
+          content.classList.add('active');
+          if (overlay) overlay.style.display = 'block';
+          document.body.style.overflow = 'hidden'; // Prevent background scroll
         }
         e.stopPropagation();
       }
     });
   });
 
-  document.addEventListener('click', () => {
-    if (window.innerWidth <= 768) {
-      document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
+  if (overlay) {
+    overlay.addEventListener('click', closeAllDropdowns);
+  }
+
+  document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768 && !e.target.closest('.dropdown')) {
+      closeAllDropdowns();
     }
   });
 
@@ -89,17 +95,19 @@
     const pins = loadPins();
     const container = document.getElementById('quick-hits-links');
     const empty = document.getElementById('qh-empty');
-    container.querySelectorAll('.pinned-chip').forEach(el => el.remove());
-    if (pins.length === 0) {
-      empty.style.display = 'inline-block';
-    } else {
-      empty.style.display = 'none';
-      pins.forEach(pin => {
-        const chip = document.createElement('span');
-        chip.className = 'pinned-chip';
-        chip.innerHTML = `<a href="${pin.url}" target="_blank">${pin.name}</a><button class="unpin-btn" title="Unpin" onclick="unpin('${pin.url}')">✕</button>`;
-        container.appendChild(chip);
-      });
+    if (container) {
+      container.querySelectorAll('.pinned-chip').forEach(el => el.remove());
+      if (pins.length === 0) {
+        if (empty) empty.style.display = 'inline-block';
+      } else {
+        if (empty) empty.style.display = 'none';
+        pins.forEach(pin => {
+          const chip = document.createElement('span');
+          chip.className = 'pinned-chip';
+          chip.innerHTML = `<a href="${pin.url}" target="_blank">${pin.name}</a><button class="unpin-btn" title="Unpin" onclick="unpin('${pin.url}')">✕</button>`;
+          container.appendChild(chip);
+        });
+      }
     }
     document.querySelectorAll('.pin-btn').forEach(btn => {
       const url = btn.dataset.url;
@@ -152,7 +160,7 @@
   if (navSearch) {
     navSearch.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => { searchEl.focus(); }, 300);
+      setTimeout(() => { if (searchEl) searchEl.focus(); }, 300);
     });
   }
   if (navPinned) {
