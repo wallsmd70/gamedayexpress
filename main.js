@@ -1,7 +1,9 @@
 (function() {
   const d = new Date();
-  document.getElementById('ticker-date').textContent =
-    'GameDay Express — ' + d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const tickerDate = document.getElementById('ticker-date');
+  if (tickerDate) {
+    tickerDate.textContent = 'GameDay Express — ' + d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  }
 
   const searchEl = document.getElementById('search');
   const clearBtn = document.getElementById('clear-btn');
@@ -27,41 +29,41 @@
         const raw = a.textContent;
         if (!q) { a.innerHTML = raw; item.style.display = ''; }
         else if (raw.toLowerCase().includes(q)) {
-          a.innerHTML = raw.replace(new RegExp(q,'gi'), m=>`<span class="highlight">${m}</span>`);
+          a.innerHTML = raw.replace(new RegExp(q,'gi'), m => `<span class="highlight">${m}</span>`);
           item.style.display = '';
         } else { a.innerHTML = raw; item.style.display = 'none'; }
       });
-      const anyLink = !q || Array.from(card.querySelectorAll('.link-item')).some(i=>i.style.display!=='none');
+      const anyLink = !q || Array.from(card.querySelectorAll('.link-item')).some(i => i.style.display !== 'none');
       const matchCard = !q || tags.includes(q) || title.includes(q);
       const show = anyLink || matchCard;
       card.style.display = show ? '' : 'none';
       if (show) anyVisible = true;
     });
-    document.getElementById('no-results').style.display = anyVisible ? 'none' : 'block';
+    const noResults = document.getElementById('no-results');
+    if (noResults) noResults.style.display = anyVisible ? 'none' : 'block';
   }
 
-  searchEl.addEventListener('input', ()=>runFilter(searchEl.value));
-  clearBtn.addEventListener('click', ()=>{ searchEl.value=''; runFilter(''); });
+  window.runFilter = runFilter;
 
-  // Improved Dropdown Handling for Mobile
-  function closeAllDropdowns() {
-    document.querySelectorAll('.dropdown-content').forEach(c => c.classList.remove('active'));
-    if (overlay) overlay.style.display = 'none';
-    document.body.style.overflow = '';
-  }
+  if (searchEl) searchEl.addEventListener('input', () => runFilter(searchEl.value));
+  if (clearBtn) clearBtn.addEventListener('click', () => { searchEl.value = ''; runFilter(''); });
 
-  document.querySelectorAll('.dropdown').forEach(dropdown => {
-    dropdown.addEventListener('click', (e) => {
+  // Mobile Dropdown Handling
+  document.querySelectorAll('.dropdown').forEach(drop => {
+    drop.addEventListener('click', (e) => {
       if (window.innerWidth <= 768) {
-        const content = dropdown.querySelector('.dropdown-content');
-        const isActive = content.classList.contains('active');
+        const content = drop.querySelector('.dropdown-content');
+        const isVisible = content.style.display === 'block';
 
-        closeAllDropdowns();
+        // Close others
+        document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
 
-        if (!isActive) {
-          content.classList.add('active');
+        if (!isVisible) {
+          content.style.display = 'block';
           if (overlay) overlay.style.display = 'block';
-          document.body.style.overflow = 'hidden'; // Prevent background scroll
+        } else {
+          content.style.display = 'none';
+          if (overlay) overlay.style.display = 'none';
         }
         e.stopPropagation();
       }
@@ -69,17 +71,17 @@
   });
 
   if (overlay) {
-    overlay.addEventListener('click', closeAllDropdowns);
+    overlay.addEventListener('click', () => {
+      document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
+      overlay.style.display = 'none';
+    });
   }
 
-  document.addEventListener('click', (e) => {
-    if (window.innerWidth <= 768 && !e.target.closest('.dropdown')) {
-      closeAllDropdowns();
+  document.addEventListener('click', () => {
+    if (window.innerWidth <= 768) {
+      document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
+      if (overlay) overlay.style.display = 'none';
     }
-  });
-
-  window.addEventListener('scroll', () => {
-    document.getElementById('scroll-top').style.display = window.scrollY > 400 ? 'block' : 'none';
   });
 
   const PINS_KEY = 'gde_pins_v1';
@@ -149,24 +151,4 @@
   });
 
   renderPins();
-
-  const navHome = document.getElementById('nav-home');
-  const navSearch = document.getElementById('nav-search');
-  const navPinned = document.getElementById('nav-pinned');
-
-  if (navHome) {
-    navHome.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
-  }
-  if (navSearch) {
-    navSearch.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => { if (searchEl) searchEl.focus(); }, 300);
-    });
-  }
-  if (navPinned) {
-    navPinned.addEventListener('click', () => {
-      const quickHits = document.getElementById('quick-hits');
-      if (quickHits) { quickHits.scrollIntoView({ behavior: 'smooth' }); }
-    });
-  }
 })();
