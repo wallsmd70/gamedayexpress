@@ -41,21 +41,19 @@
 
 <!-- HEADER -->
 <div id="overlay"></div>
-<div id="banner-wrap">
-    <img src="assets/logo.png" alt="GameDay Express" id="banner-img">
-  </div>
 <div id="main-header">
-
   <div class="header-top">
+    <img src="assets/logo.png" alt="GDE" id="logo-mini">
     <div id="search-wrap">
+      <span style="color:#666; font-size:14px;">🔍</span>
       <input id="search" type="text" placeholder="Search links..." autocomplete="off">
       <button id="clear-btn">✕</button>
     </div>
   </div>
   <div id="nav">
-    <a href="#" class="active">🏠 Home</a>
+    <a href="#" class="active">🏠 HOME</a>
     <div class="dropdown">
-      <a href="javascript:void(0)" class="dropbtn">🏆 Fantasy ▼</a>
+      <a href="javascript:void(0)" class="dropbtn">🏆 FANTASY ▼</a>
       <div class="dropdown-content">
         <a href="#fantasy-baseball">⚾ Baseball</a>
         <a href="#fantasy-football">🏈 Football</a>
@@ -64,7 +62,7 @@
       </div>
     </div>
     <div class="dropdown">
-      <a href="javascript:void(0)" class="dropbtn">📊 Data ▼</a>
+      <a href="javascript:void(0)" class="dropbtn">📊 DATA ▼</a>
       <div class="dropdown-content">
         <a href="#betting">🎰 Betting</a>
         <a href="#stats">📊 Stats</a>
@@ -72,7 +70,7 @@
       </div>
     </div>
     <div class="dropdown">
-      <a href="javascript:void(0)" class="dropbtn">🎙 Media ▼</a>
+      <a href="javascript:void(0)" class="dropbtn">🎙 MEDIA ▼</a>
       <div class="dropdown-content">
         <a href="#podcasts">🎙 Podcasts</a>
         <a href="#beat-writers">📡 Beat Writers</a>
@@ -80,9 +78,8 @@
       </div>
     </div>
     <div class="dropdown">
-      <a href="javascript:void(0)" class="dropbtn">⚡ Pinned ▼</a>
+      <a href="javascript:void(0)" class="dropbtn">⚡ PINNED ▼</a>
       <div class="dropdown-content qh-grid" id="nav-pinned-links">
-        <!-- Pinned links will be cloned here for mobile or we just link to the section -->
         <a href="#quick-hits">📌 View Pinned</a>
       </div>
     </div>
@@ -91,7 +88,7 @@
 
 <div id="ticker">
   <span><strong id="ticker-date">GameDay Express</strong></span>
-  <span class="ticker-item"><span class="live-dot"></span> Live</span>
+  <span class="ticker-item"><span class="live-dot" style="background:#fff;"></span> Live</span>
   <span>⚾ MLB</span> <span>🏀 NBA</span> <span>🏒 NHL</span>
 </div>
 
@@ -103,51 +100,26 @@
     </div>
   </div>
 </div>
-  <div id="featured">
-  <span style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em;">🔍 Browse Category:</span>
-  
+
+<div id="featured">
+  <label>🔍 BROWSE CATEGORY:</label>
   <div class="dropdown">
-    <a href="javascript:void(0)" class="dropbtn" id="active-category">All Categories ▼</a>
+    <a href="javascript:void(0)" class="dropbtn" id="active-category">ALL CATEGORIES ▼</a>
     <div class="dropdown-content browse-grid">
-      <a href="javascript:void(0)" onclick="runFilter('')">All Categories</a>
-      <a href="javascript:void(0)" onclick="runFilter('baseball')">Baseball</a>
-      <a href="javascript:void(0)" onclick="runFilter('football')">Football</a>
-      <a href="javascript:void(0)" onclick="runFilter('basketball')">Basketball</a>
-      <a href="javascript:void(0)" onclick="runFilter('hockey')">Hockey</a>
-      <a href="javascript:void(0)" onclick="runFilter('fantasy')">Fantasy</a>
-      <a href="javascript:void(0)" onclick="runFilter('dfs')">DFS</a>
-      <a href="javascript:void(0)" onclick="runFilter('betting')">Betting</a>
-      <a href="javascript:void(0)" onclick="runFilter('shop')">Shop</a>
-      <a href="javascript:void(0)" onclick="runFilter('stats')">Stats</a>
-      <a href="javascript:void(0)" onclick="runFilter('news')">News</a>
-      <a href="javascript:void(0)" onclick="runFilter('coaching')">Coaching</a>
-      <a href="javascript:void(0)" onclick="runFilter('rankings')">Rankings</a>
-      <a href="javascript:void(0)" onclick="runFilter('waiver')">Waiver</a>
-      <a href="javascript:void(0)" onclick="runFilter('golf')">Golf</a>
-      <a href="javascript:void(0)" onclick="runFilter('outdoor')">Outdoor</a>
-      <a href="javascript:void(0)" onclick="runFilter('simulation')">Sim Games</a>
-      <a href="javascript:void(0)" onclick="runFilter('beat writers')">Beat Writers</a>
-      <a href="javascript:void(0)" onclick="runFilter('historical')">History</a>
-      <a href="javascript:void(0)" onclick="runFilter('rules')">Rules</a>
-      <a href="javascript:void(0)" onclick="runFilter('officials')">Officials</a>
-      <a href="javascript:void(0)" onclick="runFilter('recruiting')">Recruiting</a>
-      <a href="javascript:void(0)" onclick="runFilter('conferences')">Conferences</a>
-      <a href="javascript:void(0)" onclick="runFilter('tennis')">Tennis</a>
-      <a href="javascript:void(0)" onclick="runFilter('pickleball')">Pickleball</a>
-      <a href="javascript:void(0)" onclick="runFilter('motorsports')">Racing</a>
-      <a href="javascript:void(0)" onclick="runFilter('boxing')">Boxing</a>
-      <a href="javascript:void(0)" onclick="runFilter('mma')">MMA</a>
-      <a href="javascript:void(0)" onclick="runFilter('contracts')">Contracts</a>
-      <a href="javascript:void(0)" onclick="runFilter('weather')">Weather</a>
-      <a href="javascript:void(0)" onclick="runFilter('lineups')">Lineups</a>
-      <a href="javascript:void(0)" onclick="runFilter('analytics')">Analytics</a>
-      <a href="javascript:void(0)" onclick="runFilter('replay')">Replay</a>
-      <a href="javascript:void(0)" onclick="runFilter('minor leagues')">Minor Leagues</a>
-      <a href="javascript:void(0)" onclick="runFilter('business')">Sports Biz</a>
+      <a href="javascript:void(0)" onclick="runFilter("")">All Categories</a>
+      <a href="javascript:void(0)" onclick="runFilter("baseball")">Baseball</a>
+      <a href="javascript:void(0)" onclick="runFilter("football")">Football</a>
+      <a href="javascript:void(0)" onclick="runFilter("basketball")">Basketball</a>
+      <a href="javascript:void(0)" onclick="runFilter("hockey")">Hockey</a>
+      <a href="javascript:void(0)" onclick="runFilter("fantasy")">Fantasy</a>
+      <a href="javascript:void(0)" onclick="runFilter("dfs")">DFS</a>
+      <a href="javascript:void(0)" onclick="runFilter("betting")">Betting</a>
+      <a href="javascript:void(0)" onclick="runFilter("shop")">Shop</a>
+      <a href="javascript:void(0)" onclick="runFilter("stats")">Stats</a>
+      <a href="javascript:void(0)" onclick="runFilter("news")">News</a>
     </div>
   </div>
 </div>
-
 <!-- MAIN GRID -->
 <div class="grid" id="primary-grid">
 

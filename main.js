@@ -14,31 +14,88 @@
     if (activeBtn && q !== undefined) {
       const isSearch = document.activeElement === searchEl;
       if (!isSearch) {
-        activeBtn.textContent = (q === '' ? 'All Categories' : q.charAt(0).toUpperCase() + q.slice(1)) + ' ▼';
+        activeBtn.textContent = (q === '' ? 'ALL CATEGORIES' : q.toUpperCase()) + ' ▼';
       }
     }
 
     q = (q || '').toLowerCase().trim();
     let anyVisible = false;
-    document.querySelectorAll('.card').forEach(card => {
+    document.querySelectorAll('.grid > .card').forEach(card => {
       const tags  = (card.dataset.tags||'').toLowerCase();
       const title = card.querySelector('.card-title').textContent.toLowerCase();
-      card.querySelectorAll('.link-item').forEach(item => {
+
+      let cardHasMatch = false;
+      const items = card.querySelectorAll('.link-item');
+      const itemVisibilities = new Array(items.length).fill(false);
+
+      items.forEach((item, idx) => {
         const a = item.querySelector('a');
-        if (!a) return;
-        const raw = a.textContent;
-        if (!q) { a.innerHTML = raw; item.style.display = ''; }
-        else if (raw.toLowerCase().includes(q)) {
-          a.innerHTML = raw.replace(new RegExp(q,'gi'), m => `<span class="highlight">${m}</span>`);
-          item.style.display = '';
-        } else { a.innerHTML = raw; item.style.display = 'none'; }
+        const em = item.querySelector('em');
+
+        if (a) {
+          const rawA = a.getAttribute('data-raw') || a.textContent;
+          if (!a.getAttribute('data-raw')) a.setAttribute('data-raw', rawA);
+
+          if (!q || rawA.toLowerCase().includes(q)) {
+            itemVisibilities[idx] = true;
+            cardHasMatch = true;
+          }
+        } else if (em) {
+          const rawEm = em.getAttribute('data-raw') || em.textContent;
+          if (!em.getAttribute('data-raw')) em.setAttribute('data-raw', rawEm);
+
+          if (q && rawEm.toLowerCase().includes(q)) {
+            itemVisibilities[idx] = true;
+            cardHasMatch = true;
+            if (idx > 0) itemVisibilities[idx-1] = true;
+          }
+        }
       });
-      const anyLink = !q || Array.from(card.querySelectorAll('.link-item')).some(i => i.style.display !== 'none');
+
       const matchCard = !q || tags.includes(q) || title.includes(q);
-      const show = anyLink || matchCard;
-      card.style.display = show ? '' : 'none';
-      if (show) anyVisible = true;
+
+      items.forEach((item, idx) => {
+        const show = matchCard || itemVisibilities[idx] || (idx < items.length - 1 && itemVisibilities[idx+1] && items[idx+1].querySelector('em'));
+        item.style.display = show ? '' : 'none';
+
+        const a = item.querySelector('a');
+        const em = item.querySelector('em');
+
+        if (a) {
+          const rawA = a.getAttribute('data-raw') || a.textContent;
+          if (q && show && rawA.toLowerCase().includes(q)) {
+            a.innerHTML = rawA.replace(new RegExp(q.replace(/[-\/\\^+?.()|[\]{}]/g, '\\$&'),'gi'), m => `<span class="highlight">${m}</span>`);
+          } else {
+            a.innerHTML = rawA;
+          }
+        }
+        if (em) {
+          const rawEm = em.getAttribute('data-raw') || em.textContent;
+          if (q && show && rawEm.toLowerCase().includes(q)) {
+            em.innerHTML = rawEm.replace(new RegExp(q.replace(/[-\/\\^+?.()|[\]{}]/g, '\\$&'),'gi'), m => `<span class="highlight">${m}</span>`);
+          } else {
+            em.innerHTML = rawEm;
+          }
+        }
+      });
+
+      card.style.display = (cardHasMatch || matchCard) ? '' : 'none';
+      if (cardHasMatch || matchCard) anyVisible = true;
     });
+
+    document.querySelectorAll('.zone-divider').forEach(div => {
+        let next = div.nextElementSibling;
+        let hasVisibleCard = false;
+        while (next && !next.classList.contains('zone-divider')) {
+            if (next.classList.contains('card') && next.style.display !== 'none') {
+                hasVisibleCard = true;
+                break;
+            }
+            next = next.nextElementSibling;
+        }
+        div.style.display = hasVisibleCard ? '' : 'none';
+    });
+
     const noResults = document.getElementById('no-results');
     if (noResults) noResults.style.display = anyVisible ? 'none' : 'block';
   }
@@ -46,17 +103,23 @@
   window.runFilter = runFilter;
 
   if (searchEl) searchEl.addEventListener('input', () => runFilter(searchEl.value));
-  if (clearBtn) clearBtn.addEventListener('click', () => { searchEl.value = ''; runFilter(''); });
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      searchEl.value = '';
+      runFilter('');
+    });
+  }
 
-  // Mobile Dropdown Handling
   document.querySelectorAll('.dropdown').forEach(drop => {
     drop.addEventListener('click', (e) => {
       if (window.innerWidth <= 768) {
         const content = drop.querySelector('.dropdown-content');
+        if (!content) return;
         const isVisible = content.style.display === 'block';
 
-        // Close others
-        document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
+        document.querySelectorAll('.dropdown-content').forEach(c => {
+            if (c !== content) c.style.display = 'none';
+        });
 
         if (!isVisible) {
           content.style.display = 'block';
@@ -77,14 +140,16 @@
     });
   }
 
-  document.addEventListener('click', () => {
+  document.addEventListener('click', (e) => {
     if (window.innerWidth <= 768) {
-      document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
-      if (overlay) overlay.style.display = 'none';
+      if (!e.target.closest('.dropdown')) {
+          document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
+          if (overlay) overlay.style.display = 'none';
+      }
     }
   });
 
-  const PINS_KEY = 'gde_pins_v1';
+  const PINS_KEY = 'gde_pins_v3';
   function loadPins() {
     try { return JSON.parse(localStorage.getItem(PINS_KEY)) || []; }
     catch { return []; }
@@ -95,28 +160,25 @@
 
   function renderPins() {
     const pins = loadPins();
-    const container = document.getElementById('quick-hits-links');
-    const empty = document.getElementById('qh-empty');
+    const container = document.getElementById('nav-pinned-links');
     if (container) {
-      container.querySelectorAll('.pinned-chip').forEach(el => el.remove());
-      if (pins.length === 0) {
-        if (empty) empty.style.display = 'inline-block';
-      } else {
-        if (empty) empty.style.display = 'none';
-        pins.forEach(pin => {
-          const chip = document.createElement('span');
-          chip.className = 'pinned-chip';
-          chip.innerHTML = `<a href="${pin.url}" target="_blank">${pin.name}</a><button class="unpin-btn" title="Unpin" onclick="unpin('${pin.url}')">✕</button>`;
-          container.appendChild(chip);
-        });
-      }
+      const viewPinned = container.querySelector('a[href="#quick-hits"]');
+      container.innerHTML = '';
+      if (viewPinned) container.appendChild(viewPinned);
+
+      pins.forEach(pin => {
+        const a = document.createElement('a');
+        a.href = pin.url;
+        a.target = "_blank";
+        a.textContent = '📍 ' + pin.name;
+        container.appendChild(a);
+      });
     }
     document.querySelectorAll('.pin-btn').forEach(btn => {
       const url = btn.dataset.url;
       const isPinned = pins.some(p => p.url === url);
-      btn.textContent = '📌';
-      btn.classList.toggle('pinned', isPinned);
-      btn.title = isPinned ? 'Unpin' : 'Pin to Quick Hits';
+      btn.style.background = isPinned ? '#ff3b30' : '#fff';
+      btn.style.color = isPinned ? '#fff' : '#000';
     });
   }
 
@@ -128,24 +190,17 @@
     renderPins();
   };
 
-  window.unpin = function(url) {
-    let pins = loadPins().filter(p => p.url !== url);
-    savePins(pins);
-    renderPins();
-  };
-
   document.querySelectorAll('.link-item').forEach(item => {
     const a = item.querySelector('a');
     if (!a) return;
     const btn = document.createElement('button');
     btn.className = 'pin-btn';
-    btn.textContent = '📌';
-    btn.title = 'Pin to Quick Hits';
+    btn.textContent = '📍';
     btn.dataset.url = a.href;
     btn.onclick = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      window.togglePin(a.href, a.textContent.trim());
+      window.togglePin(a.href, (a.getAttribute('data-raw') || a.textContent).trim());
     };
     item.appendChild(btn);
   });
