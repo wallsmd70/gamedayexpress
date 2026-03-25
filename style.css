@@ -284,3 +284,120 @@ body {
 }
 
 .highlight { background: rgba(255, 59, 48, 0.4); color: #fff; border-radius: 2px; }
+
+/* Ticker Animation & Layout */
+#ticker-track-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 20px;
+}
+
+#ticker-track {
+  display: inline-block;
+  white-space: nowrap;
+  position: absolute;
+  will-change: transform;
+  animation: ticker-scroll 60s linear infinite; display: inline-block;
+}
+
+#ticker-track:hover {
+  animation-play-state: paused;
+}
+
+#ticker-track a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  margin-right: 20px;
+}
+
+#ticker-track a:hover {
+  color: var(--accent);
+}
+
+.ticker-sep {
+  margin: 0 10px;
+  color: #444;
+}
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Link Hover & Interaction */
+.link-item {
+  transition: background 0.1s ease;
+}
+
+.link-item:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.link-item a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.pin-btn:hover {
+  transform: scale(1.1);
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+/* Subtle Branding Banner */
+#brand-banner {
+  padding: 15px 12px;
+  background: linear-gradient(135deg, #121212 0%, #0b0b0b 100%);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#brand-banner h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+#brand-banner p {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+#brand-banner .accent-line {
+  width: 40px;
+  height: 3px;
+  background: var(--accent);
+  margin-top: 4px;
+  border-radius: 2px;
+}
+
+/* Refined Ticker Alignment */
+#news-ticker {
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+#ticker-track-wrap {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#ticker-track {
+  display: flex;
+  align-items: center;
+}
+
+/* Nav Hover */
+#nav a:hover, .dropbtn:hover {
+  background: var(--surface3);
+  border-color: var(--accent);
+}
