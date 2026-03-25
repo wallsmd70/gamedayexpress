@@ -35,7 +35,120 @@
   a { color: var(--accent); text-decoration: none; transition: all 0.2s ease; }
   a:hover { color: #fff; text-decoration: none; opacity: 0.8; }
 
-  /* ── HEADER ── */
+  /* ── BANNER & OVERLAY ── */
+  .banner-container {
+    position: relative;
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  .banner-image {
+    width: 100%;
+    height: 400px;
+    display: block;
+    object-fit: cover;
+    filter: brightness(0.7);
+  }
+
+  .overlay-element {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #fff;
+    z-index: 10;
+    width: 90%;
+    max-width: 800px;
+  }
+
+  .overlay-element h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(24px, 5vw, 48px);
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+
+  .overlay-element p {
+    font-size: clamp(14px, 2vw, 18px);
+    margin-bottom: 24px;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .overlay-element button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .overlay-element button:hover {
+    background: var(--accent3);
+    transform: scale(1.05);
+  }
+
+  /* ── SEARCH BAR POSITIONING ── */
+  #search-wrap {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(22, 22, 22, 0.8);
+    backdrop-filter: var(--glass);
+    -webkit-backdrop-filter: var(--glass);
+    padding: 4px 4px 4px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-bright);
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  
+  #search-wrap:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+    background: var(--surface2);
+  }
+
+  #search {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    padding: 8px 0;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    width: 240px;
+    outline: none;
+  }
+
+  #clear-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  #clear-btn:hover { background: var(--accent-red); color: #fff; border-color: var(--accent-red); }
+
+  /* ── HEADER ADJUSTMENT ── */
   #header {
     background: rgba(5, 5, 5, 0.8);
     backdrop-filter: var(--glass);
@@ -56,6 +169,11 @@
     gap: 32px;
     flex-wrap: wrap;
   }
+  
+  /* Hide the search in header top as it's now fixed top-right */
+  .header-top #search-wrap {
+    display: none;
+  }
 
   #logo {
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -75,47 +193,6 @@
     letter-spacing: 0.02em;
     margin-top: -2px;
   }
-
-  #search-wrap {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--surface2);
-    padding: 4px 4px 4px 12px;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border);
-    transition: all 0.3s ease;
-  }
-  #search-wrap:focus-within {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-  }
-
-  #search {
-    background: transparent;
-    border: none;
-    color: var(--text);
-    padding: 8px 0;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    width: 280px;
-    outline: none;
-  }
-
-  #clear-btn {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    padding: 8px 16px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: var(--radius-sm);
-    font-family: 'Inter', sans-serif;
-    transition: all 0.2s;
-  }
-  #clear-btn:hover { background: var(--accent-red); color: #fff; border-color: var(--accent-red); }
 
   /* ── NAV ── */
   #nav {
