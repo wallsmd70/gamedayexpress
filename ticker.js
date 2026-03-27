@@ -9,21 +9,10 @@
     { emoji: '🏈', label: 'NFL',    url: 'https://www.espn.com/espn/rss/nfl/news'          },
     { emoji: '🏀', label: 'NBA',    url: 'https://www.espn.com/espn/rss/nba/news'          },
     { emoji: '🏒', label: 'NHL',    url: 'https://www.espn.com/espn/rss/nhl/news'          },
-    { emoji: '🎓', label: 'NCAAF',  url: 'https://www.espn.com/espn/rss/ncf/news'          },
-    { emoji: '🏀', label: 'NCAAB',  url: 'https://www.espn.com/espn/rss/ncb/news'          },
     { emoji: '⛳', label: 'Golf',   url: 'https://www.espn.com/espn/rss/golf/news'         },
     { emoji: '⚽', label: 'Soccer', url: 'https://www.espn.com/espn/rss/soccer/news'       },
     { emoji: '🏎', label: 'F1',     url: 'https://www.espn.com/espn/rss/rpm/news'          },
-    { emoji: '📰', label: 'MLB',    url: 'https://www.mlbtraderumors.com/feed'             },
-  ];
-
-  // TheSportsDB league IDs for "today's events" — free tier, no key needed
-  const TSDB_LEAGUES = [
-    { id: '4391', emoji: '🏈', name: 'NFL'  },
-    { id: '4387', emoji: '🏀', name: 'NBA'  },
-    { id: '4424', emoji: '⚾', name: 'MLB'  },
-    { id: '4380', emoji: '🏒', name: 'NHL'  },
-    { id: '4346', emoji: '⚽', name: 'MLS'  },
+    { emoji: '📰', label: 'Rumors', url: 'https://www.mlbtraderumors.com/feed'             },
   ];
 
   const FALLBACK = [
@@ -49,13 +38,17 @@
   function buildTrack(items) {
     const track = document.getElementById('ticker-track');
     if (!track || !items.length) return;
+
+    // We need to double the items so it loops seamlessly
     const doubled = [...items, ...items];
     track.innerHTML = doubled.map(item =>
       `<span class="ticker-sep">◆</span><a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>`
     ).join('');
-    // Adjust speed based on content length — more items = faster scroll
-    const speed = Math.max(40, Math.min(90, items.length * 4));
-    document.getElementById('ticker-track').style.animationDuration = speed + 's';
+
+    // Adjust speed based on content length — more items = slower speed (fixed duration per item)
+    // Approximately 10s per 5 items is reasonable
+    const speed = Math.max(30, Math.min(120, doubled.length * 3));
+    track.style.animationDuration = speed + 's';
   }
 
   // ── FETCH SINGLE RSS FEED ────────────────────────────────────────────────
@@ -75,45 +68,16 @@
       .catch(() => []);
   }
 
-  // ── FETCH TODAY'S EVENTS FROM SPORTSDB ──────────────────────────────────
-  function fetchTodayEvents() {
-    const today = new Date().toISOString().split('T')[0];
-    const calls = TSDB_LEAGUES.map(league => {
-      const url = `https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${today}&l=${league.id}`;
-      return fetch(url)
-        .then(r => r.json())
-        .then(data => {
-          if (!data.events) return [];
-          return data.events.slice(0, 3).map(ev => {
-            const time = ev.strTime ? ev.strTime.substring(0, 5) + ' ET' : 'Today';
-            return {
-              title: `${league.emoji} ${league.name}: ${ev.strHomeTeam} vs ${ev.strAwayTeam} — ${time}`,
-              link: `https://www.thesportsdb.com/event/${ev.idEvent}`
-            };
-          });
-        })
-        .catch(() => []);
-    });
-    return Promise.all(calls).then(results => results.flat());
-  }
-
   // ── MAIN LOADER ──────────────────────────────────────────────────────────
   function loadTicker() {
     const feedPromises = FEEDS.map(f => fetchFeed(f));
-    const eventsPromise = fetchTodayEvents();
 
-    Promise.all([...feedPromises, eventsPromise])
+    Promise.all(feedPromises)
       .then(results => {
-        const events  = results[results.length - 1];   // last result = events
-        const stories = results.slice(0, -1).flat();    // everything else = RSS stories
+        const stories = results.flat();
 
-        // Interleave: start with today's events (most useful), then stories
-        let combined = [];
-        if (events.length)  combined = combined.concat(events);
-        if (stories.length) combined = combined.concat(shuffle(stories));
-
-        if (combined.length >= 4) {
-          buildTrack(combined);
+        if (stories.length >= 4) {
+          buildTrack(shuffle(stories));
         } else {
           buildTrack(FALLBACK);
         }
@@ -121,5 +85,9 @@
       .catch(() => buildTrack(FALLBACK));
   }
 
-  document.addEventListener('DOMContentLoaded', loadTicker);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadTicker);
+  } else {
+    loadTicker();
+  }
 })();

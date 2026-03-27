@@ -1,33 +1,29 @@
 // ─────────────────────────────────────────────
 // GameDay Express — Service Worker
-//
-// HOW TO FORCE ALL USERS TO GET LATEST VERSION:
-// Every time you update index.html, bump the
-// version number below by 1 (v2, v3, v4 etc.)
-// That's all you ever need to do.
 // ─────────────────────────────────────────────
-const CACHE_VERSION = 'gamedayexpress-v21';
-const OFFLINE_PAGE  = '/gamedayexpress/index.html';
+const CACHE_VERSION = 'gamedayexpress-v29';
+const OFFLINE_PAGE  = '/index.html';
 
 // Install: cache the core page immediately
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_VERSION).then(cache => {
       return cache.addAll([
-        '/gamedayexpress/',
-        '/gamedayexpress/index.html',
-        '/gamedayexpress/manifest.json',
-        '/gamedayexpress/style.css',
-        '/gamedayexpress/main.js',
-        '/gamedayexpress/ticker.js',
-        '/gamedayexpress/tracking.js'
+        '/',
+        '/index.html',
+        '/manifest.json',
+        '/style.css',
+        '/main.js',
+        '/ticker.js',
+        '/tracking.js',
+        '/assets/logo.png'
       ]);
     })
   );
   self.skipWaiting();
 });
 
-// Activate: delete ALL old caches so users never see stale content
+// Activate: delete ALL old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -42,7 +38,6 @@ self.addEventListener('activate', event => {
 });
 
 // Fetch strategy: Network FIRST, fall back to cache only if offline.
-// This means users ALWAYS get the freshest version when online.
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   event.respondWith(

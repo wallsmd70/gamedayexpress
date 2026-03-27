@@ -2,7 +2,7 @@
   "name": "GameDay Express",
   "short_name": "GameDay",
   "description": "Your shortcut to sports, fantasy, betting and stats.",
-  "start_url": "/gamedayexpress/",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0d0f12",
   "theme_color": "#e8341a",

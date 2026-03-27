@@ -1,90 +1,155 @@
+(function() {
   const d = new Date();
-  document.getElementById('ticker-date').textContent =
-    'GameDay Express — ' + d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const tickerDate = document.getElementById('ticker-date');
+  if (tickerDate) {
+    tickerDate.textContent = 'GameDay Express — ' + d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  }
 
   const searchEl = document.getElementById('search');
   const clearBtn = document.getElementById('clear-btn');
+  const overlay = document.getElementById('overlay');
 
   function runFilter(q) {
     const activeBtn = document.getElementById('active-category');
     if (activeBtn && q !== undefined) {
-      // Check if we are passing a category vs a search term
       const isSearch = document.activeElement === searchEl;
       if (!isSearch) {
-        activeBtn.textContent = (q === '' ? 'All Categories' : q.charAt(0).toUpperCase() + q.slice(1)) + ' ▼';
+        activeBtn.textContent = (q === '' ? 'ALL CATEGORIES' : q.toUpperCase()) + ' ▼';
       }
     }
 
     q = (q || '').toLowerCase().trim();
     let anyVisible = false;
-    document.querySelectorAll('.card').forEach(card => {
+    document.querySelectorAll('.grid > .card').forEach(card => {
       const tags  = (card.dataset.tags||'').toLowerCase();
       const title = card.querySelector('.card-title').textContent.toLowerCase();
-      card.querySelectorAll('.link-item').forEach(item => {
+
+      let cardHasMatch = false;
+      const items = card.querySelectorAll('.link-item');
+      const itemVisibilities = new Array(items.length).fill(false);
+
+      items.forEach((item, idx) => {
         const a = item.querySelector('a');
-        if (!a) return;
-        const raw = a.textContent;
-        if (!q) { a.innerHTML = raw; item.style.display = ''; }
-        else if (raw.toLowerCase().includes(q)) {
-          a.innerHTML = raw.replace(new RegExp(q,'gi'), m=>`<span class="highlight">${m}</span>`);
-          item.style.display = '';
-        } else { a.innerHTML = raw; item.style.display = 'none'; }
+        const em = item.querySelector('em');
+
+        if (a) {
+          const rawA = a.getAttribute('data-raw') || a.textContent;
+          if (!a.getAttribute('data-raw')) a.setAttribute('data-raw', rawA);
+
+          if (!q || rawA.toLowerCase().includes(q)) {
+            itemVisibilities[idx] = true;
+            cardHasMatch = true;
+          }
+        } else if (em) {
+          const rawEm = em.getAttribute('data-raw') || em.textContent;
+          if (!em.getAttribute('data-raw')) em.setAttribute('data-raw', rawEm);
+
+          if (q && rawEm.toLowerCase().includes(q)) {
+            itemVisibilities[idx] = true;
+            cardHasMatch = true;
+            if (idx > 0) itemVisibilities[idx-1] = true;
+          }
+        }
       });
-      const anyLink = !q || Array.from(card.querySelectorAll('.link-item')).some(i=>i.style.display!=='none');
+
       const matchCard = !q || tags.includes(q) || title.includes(q);
-      const show = anyLink || matchCard;
-      card.style.display = show ? '' : 'none';
-      if (show) anyVisible = true;
+
+      items.forEach((item, idx) => {
+        const show = matchCard || itemVisibilities[idx] || (idx < items.length - 1 && itemVisibilities[idx+1] && items[idx+1].querySelector('em'));
+        item.style.display = show ? '' : 'none';
+
+        const a = item.querySelector('a');
+        const em = item.querySelector('em');
+
+        if (a) {
+          const rawA = a.getAttribute('data-raw') || a.textContent;
+          if (q && show && rawA.toLowerCase().includes(q)) {
+            a.innerHTML = rawA.replace(new RegExp(q.replace(/[-\/\\^+?.()|[\]{}]/g, '\\$&'),'gi'), m => `<span class="highlight">${m}</span>`);
+          } else {
+            a.innerHTML = rawA;
+          }
+        }
+        if (em) {
+          const rawEm = em.getAttribute('data-raw') || em.textContent;
+          if (q && show && rawEm.toLowerCase().includes(q)) {
+            em.innerHTML = rawEm.replace(new RegExp(q.replace(/[-\/\\^+?.()|[\]{}]/g, '\\$&'),'gi'), m => `<span class="highlight">${m}</span>`);
+          } else {
+            em.innerHTML = rawEm;
+          }
+        }
+      });
+
+      card.style.display = (cardHasMatch || matchCard) ? '' : 'none';
+      if (cardHasMatch || matchCard) anyVisible = true;
     });
-    document.getElementById('no-results').style.display = anyVisible ? 'none' : 'block';
+
+    document.querySelectorAll('.zone-divider').forEach(div => {
+        let next = div.nextElementSibling;
+        let hasVisibleCard = false;
+        while (next && !next.classList.contains('zone-divider')) {
+            if (next.classList.contains('card') && next.style.display !== 'none') {
+                hasVisibleCard = true;
+                break;
+            }
+            next = next.nextElementSibling;
+        }
+        div.style.display = hasVisibleCard ? '' : 'none';
+    });
+
+    const noResults = document.getElementById('no-results');
+    if (noResults) noResults.style.display = anyVisible ? 'none' : 'block';
   }
 
-  searchEl.addEventListener('input', ()=>runFilter(searchEl.value));
-  clearBtn.addEventListener('click', ()=>{ searchEl.value=''; runFilter(''); });
+  window.runFilter = runFilter;
 
-  function filterQuickHits(cat) {
-    document.querySelectorAll('#qh-defaults .quick-chip').forEach(chip => {
-      if (cat === 'all' || chip.classList.contains('qh-' + cat)) {
-        chip.style.display = '';
-      } else {
-        chip.style.display = 'none';
-      }
+  if (searchEl) searchEl.addEventListener('input', () => runFilter(searchEl.value));
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      searchEl.value = '';
+      runFilter('');
     });
   }
 
-  // Mobile Dropdown Handling (Toggle on click)
-  document.querySelectorAll('.dropdown').forEach(dropdown => {
-    dropdown.addEventListener('click', (e) => {
+  document.querySelectorAll('.dropdown').forEach(drop => {
+    drop.addEventListener('click', (e) => {
       if (window.innerWidth <= 768) {
-        const content = dropdown.querySelector('.dropdown-content');
-        const isOpen = content.style.display === 'grid' || content.style.display === 'flex';
+        const content = drop.querySelector('.dropdown-content');
+        if (!content) return;
+        const isVisible = content.style.display === 'block';
         
-        // Close all other dropdowns
-        document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
+        document.querySelectorAll('.dropdown-content').forEach(c => {
+            if (c !== content) c.style.display = 'none';
+        });
         
-        if (!isOpen) {
-          content.style.display = content.classList.contains('qh-grid') || content.classList.contains('browse-grid') ? 'grid' : 'flex';
+        if (!isVisible) {
+          content.style.display = 'block';
+          if (overlay) overlay.style.display = 'block';
+        } else {
+          content.style.display = 'none';
+          if (overlay) overlay.style.display = 'none';
         }
         e.stopPropagation();
       }
     });
   });
 
-  // Close dropdowns when clicking outside
-  document.addEventListener('click', () => {
-    if (window.innerWidth <= 768) {
+  if (overlay) {
+    overlay.addEventListener('click', () => {
       document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
+      overlay.style.display = 'none';
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) {
+      if (!e.target.closest('.dropdown')) {
+          document.querySelectorAll('.dropdown-content').forEach(c => c.style.display = 'none');
+          if (overlay) overlay.style.display = 'none';
+      }
     }
   });
 
-  // Scroll to top button
-  window.addEventListener('scroll', () => {
-    document.getElementById('scroll-top').style.display = window.scrollY > 400 ? 'block' : 'none';
-  });
-
-  // ── PERSONALIZED QUICK HITS ──────────────────────────────
-  const PINS_KEY = 'gde_pins_v1';
-
+  const PINS_KEY = 'gde_pins_v3';
   function loadPins() {
     try { return JSON.parse(localStorage.getItem(PINS_KEY)) || []; }
     catch { return []; }
@@ -95,64 +160,50 @@
 
   function renderPins() {
     const pins = loadPins();
-    const container = document.getElementById('quick-hits-links');
-    const empty = document.getElementById('qh-empty');
-    container.querySelectorAll('.pinned-chip').forEach(el => el.remove());
-    if (pins.length === 0) {
-      empty.style.display = 'inline-block';
-    } else {
-      empty.style.display = 'none';
+    const container = document.getElementById('nav-pinned-links');
+    if (container) {
+      const viewPinned = container.querySelector('a[href="#quick-hits"]');
+      container.innerHTML = '';
+      if (viewPinned) container.appendChild(viewPinned);
+
       pins.forEach(pin => {
-        const chip = document.createElement('span');
-        chip.className = 'pinned-chip';
-        chip.innerHTML = `<a href="${pin.url}" target="_blank">${pin.name}</a><button class="unpin-btn" title="Unpin" onclick="unpin('${pin.url}')">✕</button>`;
-        container.appendChild(chip);
+        const a = document.createElement('a');
+        a.href = pin.url;
+        a.target = "_blank";
+        a.textContent = '📍 ' + pin.name;
+        container.appendChild(a);
       });
     }
-    // Update pin button states across all link items
     document.querySelectorAll('.pin-btn').forEach(btn => {
       const url = btn.dataset.url;
       const isPinned = pins.some(p => p.url === url);
-      btn.textContent = isPinned ? '📌' : '📌';
-      btn.classList.toggle('pinned', isPinned);
-      btn.title = isPinned ? 'Unpin' : 'Pin to Quick Hits';
+      btn.style.background = isPinned ? '#ff3b30' : '#fff';
+      btn.style.color = isPinned ? '#fff' : '#000';
     });
   }
 
-  function togglePin(url, name) {
+  window.togglePin = function(url, name) {
     let pins = loadPins();
     const idx = pins.findIndex(p => p.url === url);
-    if (idx > -1) {
-      pins.splice(idx, 1);
-    } else {
-      pins.push({ url, name });
-    }
+    if (idx > -1) { pins.splice(idx, 1); } else { pins.push({ url, name }); }
     savePins(pins);
     renderPins();
-  }
+  };
 
-  function unpin(url) {
-    let pins = loadPins().filter(p => p.url !== url);
-    savePins(pins);
-    renderPins();
-  }
-
-  // Add pin buttons to every link item
   document.querySelectorAll('.link-item').forEach(item => {
     const a = item.querySelector('a');
     if (!a) return;
     const btn = document.createElement('button');
     btn.className = 'pin-btn';
-    btn.textContent = '📌';
-    btn.title = 'Pin to Quick Hits';
+    btn.textContent = '📍';
     btn.dataset.url = a.href;
     btn.onclick = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      togglePin(a.href, a.textContent.trim());
+      window.togglePin(a.href, (a.getAttribute('data-raw') || a.textContent).trim());
     };
     item.appendChild(btn);
   });
 
-  // Initial render
   renderPins();
+})();
