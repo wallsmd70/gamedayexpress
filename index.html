@@ -38,24 +38,34 @@
 </head>
 <body>
 
-<!-- ONBOARDING MODAL -->
-<div id="onboarding-overlay">
-  <div class="onboarding-card">
-    <h2>Personalize Your Feed</h2>
-    <p>Select the sports and tools you care about most. We'll clean up the noise and only show what's relevant to you.</p>
-    
-    <div class="interest-grid">
-      <button class="interest-btn" data-interest="baseball">⚾ Baseball</button>
-      <button class="interest-btn" data-interest="football">🏈 Football</button>
-      <button class="interest-btn" data-interest="basketball">🏀 Basketball</button>
-      <button class="interest-btn" data-interest="hockey">🏒 Hockey</button>
-      <button class="interest-btn" data-interest="fantasy">🏆 Fantasy</button>
-      <button class="interest-btn" data-interest="betting">🎰 Betting</button>
-      <button class="interest-btn" data-interest="dfs">💰 DFS</button>
-      <button class="interest-btn" data-interest="stats">📊 Stats</button>
+<!-- HEADER -->
+<div id="header">
+  <div class="header-top">
+   
+   
+	  
+<div class="banner-container">
+  <img src="banner-image.png" alt="GameDay Express Banner" style="width:100%;">
+  
+  <div class="banner-text">
+    <div id="logo">GAME<span>DAY</span> EXPRESS</div>
+    <div id="tagline">Your shortcut to sports, fantasy, betting &amp; stats</div>
+  </div>
+</div>
+	
+	<div id="search-wrap">
+      <input id="search" type="text" placeholder="Filter links... (e.g. rankings, NBA, DFS)" autocomplete="off">
+      <button id="clear-btn">✕ Clear</button>
     </div>
-
-    <button class="save-prefs-btn" onclick="savePersonalization()">Start Exploring</button>
+	
+	<div>
+      <div id="logo">GAME<span>DAY</span> EXPRESS</div>
+      <div id="tagline">Your shortcut to sports, fantasy, betting &amp; stats</div>
+    </div>
+    <div id="search-wrap">
+      <input id="search" type="text" placeholder="Filter links... (e.g. rankings, NBA, DFS)" autocomplete="off">
+      <button id="clear-btn">✕ Clear</button>
+    </div>
   </div>
 </div>
 
