@@ -401,3 +401,20 @@ body {
   background: var(--surface3);
   border-color: var(--accent);
 }
+
+/* Logo Position Adjustment */
+.header-top {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px;
+}
+
+#logo-mini {
+  height: 28px; /* Slightly larger for better visibility */
+  margin-bottom: 2px;
+}
+
+#search-wrap {
+  width: 100%; /* Ensure full width below the logo */
+}
