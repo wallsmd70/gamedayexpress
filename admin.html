@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameDay Express — Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body { padding: 40px; max-width: 1000px; margin: 0 auto; background: var(--bg); color: var(--text); }
+  h1 { font-family: 'Plus Jakarta Sans', sans-serif; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+  .admin-container { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; }
+  .category-manager { margin-bottom: 32px; border-bottom: 1px solid var(--border); padding-bottom: 24px; }
+  .category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .link-list { list-style: none; padding: 0; }
+  .link-item-row { display: flex; gap: 12px; margin-bottom: 8px; align-items: center; background: var(--surface2); padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+  .link-item-row input { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 4px; font-size: 13px; }
+  .btn { padding: 8px 16px; border-radius: 6px; border: none; font-weight: 700; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+  .btn-add { background: var(--green); color: #fff; }
+  .btn-remove { background: var(--accent-red); color: #fff; }
+  .btn-save { background: var(--accent); color: #fff; width: 100%; margin-top: 24px; font-size: 16px; padding: 16px; }
+  .output-container { margin-top: 40px; }
+  #code-output { background: #000; color: #0f0; padding: 20px; border-radius: 8px; white-space: pre-wrap; font-family: monospace; font-size: 12px; overflow-x: auto; display: none; }
+  .input-group { display: flex; flex-direction: column; gap: 4px; }
+  label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; font-weight: 800; }
+</style>
+</head>
+<body>
+
+<h1>🛡️ Admin Panel <span style="font-size: 14px; color: var(--text-dim); font-weight: 400;">— Manage Portal Links</span></h1>
+
+<div class="admin-container">
+  <div id="manager-root">
+    <!-- Categories and links will be injected here -->
+  </div>
+
+  <div style="display: flex; gap: 12px; margin-top: 24px;">
+    <button class="btn btn-add" onclick="addNewCategory()">+ Add New Category</button>
+    <button class="btn" style="background: var(--surface2); color: #fff; border: 1px solid var(--border);" onclick="generateOutput()">Generate links-data.js</button>
+  </div>
+</div>
+
+<div class="output-container">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+    <h3>💾 Generated Code</h3>
+    <button class="btn btn-save" style="width: auto; margin-top: 0;" onclick="copyOutput()">Copy to Clipboard</button>
+  </div>
+  <pre id="code-output"></pre>
+  <p style="font-size: 12px; color: var(--text-dim); margin-top: 12px;">⚠️ Copy this code and replace the entire content of <strong>links-data.js</strong> to apply changes.</p>
+</div>
+
+<div style="margin-top: 40px; text-align: center;">
+  <a href="index.html" style="color: var(--accent); text-decoration: none; font-weight: 700;">← Back to Portal</a>
+</div>
+
+<script src="links-data.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

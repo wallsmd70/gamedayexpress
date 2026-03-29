@@ -971,8 +971,8 @@
   position: fixed;
   top: 12px;
   left: 10px; /* Moved to 10px from left edge */
-  height: 34px;
-  width: 160px; /* Wider for full logo */
+  height: 102px;
+  width: 480px; /* Wider for full logo */
   z-index: 1001;
   background: transparent; /* Transparent background */
   border: none; /* No border for cleaner look */
