@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────
 // GameDay Express — Service Worker
 // ─────────────────────────────────────────────
-const CACHE_VERSION = 'gamedayexpress-v30';
+const CACHE_VERSION = 'gamedayexpress-v31';
 const OFFLINE_PAGE  = '/index.html';
 
 // Install: cache the core page immediately

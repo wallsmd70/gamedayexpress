@@ -418,3 +418,45 @@ body {
 #search-wrap {
   width: 100%; /* Ensure full width below the logo */
 }
+
+/* Monetization & Tags */
+.tag-bonus { background: #ffd700; color: #000; }
+.tag-promo { background: #007bff; color: #fff; }
+
+.ad-banner {
+  background: #1a1a1a;
+  border: 1px dashed #333;
+  padding: 12px;
+  margin: 12px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  border-radius: 6px;
+}
+
+/* Scroll Top Button */
+#scroll-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: transform 0.2s;
+}
+
+#scroll-top:active {
+  transform: scale(0.9);
+}
