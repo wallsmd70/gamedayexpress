@@ -263,7 +263,7 @@ window.addEventListener('scroll', () => {
 
   // Initial Check & Render
   if (!localStorage.getItem(PREFS_KEY)) {
-    setTimeout(() => { if (onboardingOverlay) onboardingOverlay.classList.add('visible'); }, 1000);
+    // setTimeout(() => { if (onboardingOverlay) onboardingOverlay.classList.add('visible'); }, 1000);
     window.renderGrid();
   } else {
     window.renderGrid();
