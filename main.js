@@ -134,12 +134,11 @@
 
       card.innerHTML = `
         <div class="card-header">
-          <div class="card-icon" style="background: var(--surface2); border: 1px solid var(--border);">${cat.icon}</div>
+          <div class="card-icon">${cat.icon}</div>
           <div class="card-title">${cat.category}</div>
         </div>
         <div class="card-links">${linksHtml}</div>
       `;
-
       primaryGrid.appendChild(card);
       anyVisible = true;
     });
@@ -264,7 +263,7 @@ window.addEventListener('scroll', () => {
 
   // Initial Check & Render
   if (!localStorage.getItem(PREFS_KEY)) {
-    setTimeout(() => { if (onboardingOverlay) onboardingOverlay.classList.add('visible'); }, 1000);
+    // setTimeout(() => { if (onboardingOverlay) onboardingOverlay.classList.add('visible'); }, 1000);
     window.renderGrid();
   } else {
     window.renderGrid();
