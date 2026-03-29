@@ -48,6 +48,8 @@
   }
 
   .banner-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
     width: 100%;
     height: 100%;
     display: block;
@@ -547,6 +549,13 @@
 
   /* ── MOBILE OPTIMIZATIONS ── */
   @media (max-width: 768px) {
+    #sticky-logo {
+      width: 168px;
+      height: 36px;
+      top: 11px;
+      left: 4px;
+    }
+
     #search-wrap {
       position: fixed;
       top: 12px; /* Matched to desktop for consistency */
@@ -929,6 +938,8 @@
   pointer-events: auto;
 }
 #sticky-logo img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   width: 100%;
   height: 100%;
   object-fit: contain; /* Ensure full logo is visible */
