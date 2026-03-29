@@ -150,52 +150,6 @@
   }
   #clear-btn:hover { background: var(--accent-red); color: #fff; border-color: var(--accent-red); }
 
-  /* ── HEADER ADJUSTMENT ── */
-  #header {
-    background: rgba(5, 5, 5, 0.8);
-    backdrop-filter: var(--glass);
-    -webkit-backdrop-filter: var(--glass);
-    border-bottom: 1px solid var(--border);
-    padding: 12px 0 0;
-    display: flex;
-    flex-direction: column;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .header-top {
-    padding: 0 20px 12px;
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-  
-  /* Hide the search in header top as it's now fixed top-right */
-  .header-top #search-wrap {
-    display: none;
-  }
-
-  #logo {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 800;
-    font-size: 22px;
-    letter-spacing: -0.03em;
-    color: #fff;
-    white-space: nowrap;
-    text-transform: uppercase;
-  }
-  #logo span { color: var(--accent); }
-
-  #tagline {
-    color: var(--text-dim);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    margin-top: -2px;
-  }
-
   /* ── NAV ── */
   #nav {
     background: rgba(15, 15, 15, 0.5);
@@ -593,15 +547,6 @@
 
   /* ── MOBILE OPTIMIZATIONS ── */
   @media (max-width: 768px) {
-    .header-top {
-      padding: 16px;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 16px;
-    }
-
-    #logo { font-size: 22px; }
-    
     #search-wrap {
       position: fixed;
       top: 12px; /* Matched to desktop for consistency */
@@ -636,9 +581,6 @@
       object-fit: contain;
     }
 
-    #header {
-      padding-top: 40px; /* Room for fixed search/logo */
-    }
 
     #nav {
       padding: 0 16px;
