@@ -1,0 +1,9 @@
+127.0.0.1 - - [29/Mar/2026 19:36:58] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [29/Mar/2026 19:36:58] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [29/Mar/2026 19:36:58] "GET /StickyLogo.png HTTP/1.1" 200 -
+127.0.0.1 - - [29/Mar/2026 19:36:58] "GET /banner-image.webp HTTP/1.1" 200 -
+127.0.0.1 - - [29/Mar/2026 19:36:58] "GET /links-data.js HTTP/1.1" 200 -
+127.0.0.1 - - [29/Mar/2026 19:36:58] "GET /ticker.js HTTP/1.1" 200 -
+127.0.0.1 - - [29/Mar/2026 19:36:58] "GET /protection.js HTTP/1.1" 200 -
+127.0.0.1 - - [29/Mar/2026 19:36:58] "GET /main.js HTTP/1.1" 200 -
+127.0.0.1 - - [29/Mar/2026 19:36:58] "GET /tracking.js HTTP/1.1" 200 -
