@@ -203,7 +203,8 @@
 window.addEventListener('scroll', () => {
   const scrollBtn = document.getElementById('scroll-top');
   const stickyLogo = document.getElementById('sticky-logo');
-  const bannerHeight = document.querySelector('.banner-container')?.offsetHeight || 300;
+  const searchWrap = document.getElementById('search-wrap');
+  const bannerHeight = (document.querySelector('.banner-container')?.offsetHeight || 300) + (document.getElementById('main-header')?.offsetHeight || 0);
 
   if (scrollBtn) {
     scrollBtn.style.display = window.scrollY > 400 ? 'block' : 'none';
@@ -212,6 +213,7 @@ window.addEventListener('scroll', () => {
     const isVisible = window.scrollY > bannerHeight;
     stickyLogo.classList.toggle('visible', isVisible);
     document.body.classList.toggle('sticky-active', isVisible);
+    if (searchWrap) searchWrap.classList.toggle('sticky', isVisible);
   }
 
 });
