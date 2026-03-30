@@ -276,4 +276,16 @@ window.addEventListener('scroll', () => {
     btn.addEventListener('click', () => btn.classList.toggle('selected'));
   });
 
+
+  const newsletterForm = document.getElementById('newsletter-form');
+  const newsletterSuccess = document.getElementById('newsletter-success');
+
+  if (newsletterForm && newsletterSuccess) {
+    newsletterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      newsletterForm.style.display = 'none';
+      newsletterSuccess.style.display = 'block';
+      // Future: Post to real signup API here
+    });
+  }
 })();
