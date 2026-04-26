@@ -1,4 +1,4 @@
-    -name: Weekly Dead Link Checker
+name: Weekly Dead Link Checker
 
 on:
   schedule:
@@ -29,3 +29,4 @@ jobs:
         
     - name: Run Link Checker
       run: python check_links.py
+
