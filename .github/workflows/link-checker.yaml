@@ -1,9 +1,13 @@
-name: Weekly Dead Link Checker
+    -name: Weekly Dead Link Checker
 
 on:
   schedule:
     - cron: '0 0 * * 0' 
   workflow_dispatch: 
+
+# This forces GitHub's background actions to use Node 24, fixing the deprecation warning
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   check-links:
